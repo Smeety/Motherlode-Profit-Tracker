@@ -89,41 +89,56 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
-        if (coalProfit > 0)
-        {
+        if (coalProfit > 0) {
+            String coalQuantityString = config.showQuantity() ? coalCount + (config.showProfit() ? " x " : "") : "";
+            String coalProfitString = config.showProfit() ? (coalProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(coalProfit) : FormatIntegerWithCommas(coalProfit)) + " GP" : "";
+
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Coal:")
-                    .right((config.showQuantity() ? coalCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(coalProfit) + " GP" : ""))
+                    .right(coalQuantityString + coalProfitString)
                     .build());
         }
-        if (goldProfit > 0)
-        {
+
+        if (goldProfit > 0) {
+            String goldQuantityString = config.showQuantity() ? goldCount + (config.showProfit() ? " x " : "") : "";
+            String goldProfitString = config.showProfit() ? (goldProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(goldProfit) : FormatIntegerWithCommas(goldProfit)) + " GP" : "";
+
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Gold:")
-                    .right((config.showQuantity() ? goldCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(goldProfit) + " GP" : ""))
+                    .right(goldQuantityString + goldProfitString)
                     .build());
         }
-        if (mithrilProfit > 0)
-        {
+
+        if (mithrilProfit > 0) {
+            String mithrilQuantityString = config.showQuantity() ? mithrilCount + (config.showProfit() ? " x " : "") : "";
+            String mithrilProfitString = config.showProfit() ? (mithrilProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(mithrilProfit) : FormatIntegerWithCommas(mithrilProfit)) + " GP" : "";
+
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Mithril:")
-                    .right((config.showQuantity() ? mithrilCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(mithrilProfit) + " GP" : ""))
+                    .right(mithrilQuantityString + mithrilProfitString)
                     .build());
         }
-        if (adamantiteProfit > 0)
-        {
+
+        if (adamantiteProfit > 0) {
+            String adamantiteQuantityString = config.showQuantity() ? adamantiteCount + (config.showProfit() ? " x " : "") : "";
+            String adamantiteProfitString = config.showProfit() ? (adamantiteProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(adamantiteProfit) : FormatIntegerWithCommas(adamantiteProfit)) + " GP" : "";
+
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Adamantite:")
-                    .right((config.showQuantity() ? adamantiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(adamantiteProfit) + " GP" : ""))
+                    .right(adamantiteQuantityString + adamantiteProfitString)
                     .build());
         }
-        if (runiteProfit > 0)
-        {
+
+        if (runiteProfit > 0) {
+            String runiteQuantityString = config.showQuantity() ? runiteCount + (config.showProfit() ? " x " : "") : "";
+            String runiteProfitString = config.showProfit() ? (runiteProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(runiteProfit) : FormatIntegerWithCommas(runiteProfit)) + " GP" : "";
+
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Runite:")
-                    .right((config.showQuantity() ? runiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(runiteProfit) + " GP" : ""))
+                    .right(runiteQuantityString + runiteProfitString)
                     .build());
         }
+
             // Add blank line
             panelComponent.getChildren().add(LineComponent.builder().build());
 

@@ -25,19 +25,24 @@
  */
 package com.motherlodeprofit;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.*;
 
 @ConfigGroup("motherlodeprofit")
 public interface MotherlodeProfitConfig extends Config
 {
 
+    @ConfigSection(
+            name = "Decimal Configuration",
+            description = "Configuration for decimal formatting",
+            position = 5
+    )
+    String decimalSection = "Decimal Configuration";
 
     @ConfigItem(
             keyName = "showQuantity",
             name = "Show Quantity",
-            description = "Toggle to show the quantity of ores"
+            description = "Toggle to show the quantity of ores",
+            position = 1
     )
     default boolean showQuantity()
     {
@@ -47,7 +52,8 @@ public interface MotherlodeProfitConfig extends Config
     @ConfigItem(
             keyName = "showProfit",
             name = "Show Profit",
-            description = "Toggle to show the profit from ores"
+            description = "Toggle to show the profit from ores",
+            position = 2
     )
     default boolean showProfit()
     {
@@ -55,34 +61,37 @@ public interface MotherlodeProfitConfig extends Config
     }
 
     @ConfigItem(
-            keyName = "showLootIcons",
-            name = "Show ore icons",
-            description = "Display collected ores and gems as item images instead of text"
-    )
-
-    default boolean showLootIcons()
-    {
-        return false;
-    }
-
-    @ConfigItem(
             keyName = "showNuggets",
             name = "Show Nuggets",
             description = "Configures whether to show nuggets",
-            position = 3
+            position = 4
     )
     default boolean showNuggets()
     {
         return true;
     }
+
     @ConfigItem(
             keyName = "useRSDecimalStack",
             name = "Use RS Decimal Stack",
             description = "Use RS Decimal Stack format for profit above 100,000 GP",
-            position = 3
+            position = 5,
+            section = decimalSection
     )
     default boolean useRSDecimalStack()
     {
         return true;
+    }
+    @ConfigItem(
+            keyName = "profitThreshold",
+            name = "Profit Threshold",
+            description = "The profit threshold to use RS decimal stack format",
+            position = 6,
+            section = decimalSection
+    )
+    @Range(min = 10000)
+    default int profitThreshold()
+    {
+        return 100000;
     }
 }
