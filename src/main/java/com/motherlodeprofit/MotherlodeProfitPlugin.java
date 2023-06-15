@@ -33,26 +33,19 @@ import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
-import net.runelite.api.WallObject;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WallObjectDespawned;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -72,18 +65,14 @@ public class MotherlodeProfitPlugin extends Plugin
     private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
             ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 
-    private static final int MAX_INVENTORY_SIZE = 28;
-
     private static final int SACK_LARGE_SIZE = 162;
     private static final int SACK_SIZE = 81;
-
-    private static final int UPPER_FLOOR_HEIGHT = -490;
 
     @Inject
     private OverlayManager overlayManager;
 
     @Inject
-    private MotherlodeOreOverlay motherlodeOreOverlay;
+    private MotherlodeProfitOverlay motherlodeProfitOverlay;
 
     @Inject
     private MotherlodeProfitConfig config;
@@ -109,12 +98,6 @@ public class MotherlodeProfitPlugin extends Plugin
     private boolean shouldUpdateOres;
     private Multiset<Integer> inventorySnapshot;
 
-    @Getter(AccessLevel.PACKAGE)
-    private final Set<WallObject> veins = new HashSet<>();
-    @Getter(AccessLevel.PACKAGE)
-    private final Set<GameObject> rocks = new HashSet<>();
-    @Getter(AccessLevel.PACKAGE)
-    private final Set<GameObject> brokenStruts = new HashSet<>();
 
     @Provides
     MotherlodeProfitConfig getConfig(ConfigManager configManager)
@@ -125,7 +108,7 @@ public class MotherlodeProfitPlugin extends Plugin
     @Override
     protected void startUp()
     {
-        overlayManager.add(motherlodeOreOverlay);
+        overlayManager.add(motherlodeProfitOverlay);
 
         inMlm = checkInMlm();
 
@@ -138,17 +121,8 @@ public class MotherlodeProfitPlugin extends Plugin
     @Override
     protected void shutDown()
     {
-        overlayManager.remove(motherlodeOreOverlay);
+        overlayManager.remove(motherlodeProfitOverlay);
 
-        Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
-
-        clientThread.invokeLater(() ->
-        {
-            if (sack != null && sack.isHidden())
-            {
-                sack.setHidden(false);
-            }
-        });
     }
     @Subscribe
     public void onVarbitChanged(VarbitChanged event)

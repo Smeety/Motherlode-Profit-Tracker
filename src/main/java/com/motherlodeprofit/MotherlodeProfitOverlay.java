@@ -3,19 +3,14 @@ package com.motherlodeprofit;
 import java.awt.*;
 import javax.inject.Inject;
 
-import com.motherlodeprofit.MotherlodeProfitConfig;
-import com.motherlodeprofit.MotherlodeProfitPlugin;
-import com.motherlodeprofit.MotherlodeProfitSession;
-import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
-import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class MotherlodeOreOverlay extends OverlayPanel
+public class MotherlodeProfitOverlay extends OverlayPanel
 {
     private final MotherlodeProfitPlugin plugin;
     private final MotherlodeProfitSession motherlodeSession;
@@ -23,7 +18,7 @@ public class MotherlodeOreOverlay extends OverlayPanel
     private final ItemManager itemManager;
 
     @Inject
-    MotherlodeOreOverlay(MotherlodeProfitPlugin plugin, MotherlodeProfitSession motherlodeSession, MotherlodeProfitConfig config, ItemManager itemManager)
+    MotherlodeProfitOverlay(MotherlodeProfitPlugin plugin, MotherlodeProfitSession motherlodeSession, MotherlodeProfitConfig config, ItemManager itemManager)
     {
         setPosition(OverlayPosition.TOP_LEFT);
         this.plugin = plugin;
