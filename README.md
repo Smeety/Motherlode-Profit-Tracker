@@ -13,7 +13,4 @@ Motherlode Profit Tracker is a plugin for [Runelite](https://runelite.net/) that
 
 If you have any feedback, suggestions, or bug reports, please feel free to create an issue or submit a pull request on the [GitHub repository](https://github.com/your-username/motherlode-profit-tracker). Contributions are always welcome!
 
-## License
-
-This plugin is licensed under the [MIT License](LICENSE).
 ****
