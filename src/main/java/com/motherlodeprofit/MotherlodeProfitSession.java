@@ -15,6 +15,7 @@ import net.runelite.client.game.ItemManager;
 public class MotherlodeProfitSession
 {
 
+
     @Getter(AccessLevel.PACKAGE)
     private int nuggetsCount;
 
@@ -54,6 +55,11 @@ public class MotherlodeProfitSession
     @Inject
     private ItemManager itemManager;
 
+    public int getTotalProfit()
+    {
+        return coalProfit + goldProfit + mithrilProfit + adamantiteProfit + runiteProfit;
+    }
+
     public void updateOreFound(int item, int count)
     {
         switch (item)
@@ -83,6 +89,7 @@ public class MotherlodeProfitSession
                 break;
             default:
                 log.debug("Invalid ore specified. The quantity and profit will not be updated.");
+
         }
     }
 }

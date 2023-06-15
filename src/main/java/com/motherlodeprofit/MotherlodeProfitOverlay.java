@@ -1,6 +1,7 @@
 package com.motherlodeprofit;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 import javax.inject.Inject;
 
 import net.runelite.client.game.ItemManager;
@@ -16,6 +17,12 @@ public class MotherlodeProfitOverlay extends OverlayPanel
     private final MotherlodeProfitSession motherlodeSession;
     private final MotherlodeProfitConfig config;
     private final ItemManager itemManager;
+    private long startTime;
+    private int totalProfitOverTime;
+    public static String FormatIntegerWithCommas(long value) {
+        DecimalFormat df = new DecimalFormat("###,###,###");
+        return df.format(value);
+    }
 
     @Inject
     MotherlodeProfitOverlay(MotherlodeProfitPlugin plugin, MotherlodeProfitSession motherlodeSession, MotherlodeProfitConfig config, ItemManager itemManager)
@@ -51,7 +58,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
         int runiteCount = session.getRuniteCount();
 
         // Calculate total profit
-        int totalProfit = coalProfit + goldProfit + mithrilProfit + adamantiteProfit + runiteProfit;
+        int totalProfit = session.getTotalProfit();
 
         // If no ores have been collected or both toggles are disabled, don't bother showing anything
         if (totalProfit == 0 || (!config.showQuantity() && !config.showProfit()))
@@ -78,45 +85,46 @@ public class MotherlodeProfitOverlay extends OverlayPanel
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Coal:")
-                    .right((config.showQuantity() ? coalCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? coalProfit + "GP" : ""))
+                    .right((config.showQuantity() ? coalCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(coalProfit) + " GP" : ""))
                     .build());
         }
         if (goldProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Gold:")
-                    .right((config.showQuantity() ? goldCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? goldProfit + "GP" : ""))
+                    .right((config.showQuantity() ? goldCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(goldProfit) + " GP" : ""))
                     .build());
         }
         if (mithrilProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Mithril:")
-                    .right((config.showQuantity() ? mithrilCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? mithrilProfit + "GP" : ""))
+                    .right((config.showQuantity() ? mithrilCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(mithrilProfit) + " GP" : ""))
                     .build());
         }
         if (adamantiteProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Adamantite:")
-                    .right((config.showQuantity() ? adamantiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? adamantiteProfit + "GP" : ""))
+                    .right((config.showQuantity() ? adamantiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(adamantiteProfit) + " GP" : ""))
                     .build());
         }
         if (runiteProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Runite:")
-                    .right((config.showQuantity() ? runiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? runiteProfit + "GP" : ""))
+                    .right((config.showQuantity() ? runiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(runiteProfit) + " GP" : ""))
                     .build());
         }
             // Add blank line
             panelComponent.getChildren().add(LineComponent.builder().build());
 
+
         if (totalProfit > 0)
             // Display total profit
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Total Profit:")
-                    .right(totalProfit + " GP")
+                    .right(FormatIntegerWithCommas(totalProfit) + " GP")
                     .build());
 
         return super.render(graphics);
