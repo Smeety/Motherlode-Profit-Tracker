@@ -10,28 +10,30 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.util.QuantityFormatter;
 
 public class MotherlodeProfitOverlay extends OverlayPanel
 {
     private final MotherlodeProfitPlugin plugin;
-    private final MotherlodeProfitSession motherlodeSession;
+    private final MotherlodeProfitSession motherlodeProfitSession;
     private final MotherlodeProfitConfig config;
     private final ItemManager itemManager;
     private long startTime;
-    private int totalProfitOverTime;
+    private long lastUpdateTime;
     public static String FormatIntegerWithCommas(long value) {
         DecimalFormat df = new DecimalFormat("###,###,###");
         return df.format(value);
     }
 
     @Inject
-    MotherlodeProfitOverlay(MotherlodeProfitPlugin plugin, MotherlodeProfitSession motherlodeSession, MotherlodeProfitConfig config, ItemManager itemManager)
+    MotherlodeProfitOverlay(MotherlodeProfitPlugin plugin, MotherlodeProfitSession motherlodeProfitSession, MotherlodeProfitConfig config, ItemManager itemManager)
     {
         setPosition(OverlayPosition.TOP_LEFT);
         this.plugin = plugin;
-        this.motherlodeSession = motherlodeSession;
+        this.motherlodeProfitSession = motherlodeProfitSession;
         this.config = config;
         this.itemManager = itemManager;
+        this.startTime = System.currentTimeMillis(); // Add this line to initialize startTime
     }
 
     @Override
@@ -42,7 +44,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
             return null;
         }
 
-        MotherlodeProfitSession session = motherlodeSession;
+        MotherlodeProfitSession session = motherlodeProfitSession;
 
         int coalProfit = session.getCoalProfit();
         int goldProfit = session.getGoldProfit();
@@ -59,6 +61,12 @@ public class MotherlodeProfitOverlay extends OverlayPanel
 
         // Calculate total profit
         int totalProfit = session.getTotalProfit();
+
+        // Calculate profit per hour
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - startTime;
+        double hoursElapsed = elapsedTime / (1000.0 * 60 * 60);
+        double profitPerHour = totalProfit / hoursElapsed;
 
         // If no ores have been collected or both toggles are disabled, don't bother showing anything
         if (totalProfit == 0 || (!config.showQuantity() && !config.showProfit()))
@@ -85,40 +93,45 @@ public class MotherlodeProfitOverlay extends OverlayPanel
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Coal:")
-                    .right((config.showQuantity() ? coalCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(coalProfit) + " GP" : ""))
+                    .right((config.showQuantity() ? coalCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(coalProfit) + " GP" : ""))
                     .build());
         }
         if (goldProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Gold:")
-                    .right((config.showQuantity() ? goldCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(goldProfit) + " GP" : ""))
+                    .right((config.showQuantity() ? goldCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(goldProfit) + " GP" : ""))
                     .build());
         }
         if (mithrilProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Mithril:")
-                    .right((config.showQuantity() ? mithrilCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(mithrilProfit) + " GP" : ""))
+                    .right((config.showQuantity() ? mithrilCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(mithrilProfit) + " GP" : ""))
                     .build());
         }
         if (adamantiteProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Adamantite:")
-                    .right((config.showQuantity() ? adamantiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(adamantiteProfit) + " GP" : ""))
+                    .right((config.showQuantity() ? adamantiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(adamantiteProfit) + " GP" : ""))
                     .build());
         }
         if (runiteProfit > 0)
         {
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Runite:")
-                    .right((config.showQuantity() ? runiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? FormatIntegerWithCommas(runiteProfit) + " GP" : ""))
+                    .right((config.showQuantity() ? runiteCount + (config.showProfit() ? " x " : "") : "") + (config.showProfit() ? QuantityFormatter.quantityToRSDecimalStack(runiteProfit) + " GP" : ""))
                     .build());
         }
             // Add blank line
             panelComponent.getChildren().add(LineComponent.builder().build());
 
+        // Display profit per hour
+        panelComponent.getChildren().add(LineComponent.builder()
+                .left("Profit/Hour:")
+                .right(QuantityFormatter.quantityToRSDecimalStack((int)profitPerHour) + " GP")
+                .build());
 
         if (totalProfit > 0)
             // Display total profit

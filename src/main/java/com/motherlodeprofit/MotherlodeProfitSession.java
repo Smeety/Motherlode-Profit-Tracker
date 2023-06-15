@@ -35,9 +35,6 @@ public class MotherlodeProfitSession
     private int runiteCount;
 
     @Getter(AccessLevel.PACKAGE)
-    private int nuggetsProfit;
-
-    @Getter(AccessLevel.PACKAGE)
     private int coalProfit;
 
     @Getter(AccessLevel.PACKAGE)

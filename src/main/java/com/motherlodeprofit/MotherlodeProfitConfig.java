@@ -75,4 +75,14 @@ public interface MotherlodeProfitConfig extends Config
     {
         return true;
     }
+    @ConfigItem(
+            keyName = "useRSDecimalStack",
+            name = "Use RS Decimal Stack",
+            description = "Use RS Decimal Stack format for profit above 100,000 GP",
+            position = 3
+    )
+    default boolean useRSDecimalStack()
+    {
+        return true;
+    }
 }
