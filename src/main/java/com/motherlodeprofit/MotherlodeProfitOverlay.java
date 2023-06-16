@@ -91,7 +91,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
-        if (coalProfit > 0) {
+        if (coalProfit > 0 && (config.showQuantity() || config.showProfit())) {
             String coalQuantityString = config.showQuantity() ? coalCount + (config.showProfit() ? " x " : "") : "";
             String coalProfitString = config.showProfit() ? (coalProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(coalProfit) : FormatIntegerWithCommas(coalProfit)) + " GP" : "";
 
@@ -101,7 +101,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
-        if (goldProfit > 0) {
+        if (goldProfit > 0 && (config.showQuantity() || config.showProfit())) {
             String goldQuantityString = config.showQuantity() ? goldCount + (config.showProfit() ? " x " : "") : "";
             String goldProfitString = config.showProfit() ? (goldProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(goldProfit) : FormatIntegerWithCommas(goldProfit)) + " GP" : "";
 
@@ -111,7 +111,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
-        if (mithrilProfit > 0) {
+        if (mithrilProfit > 0 && (config.showQuantity() || config.showProfit())) {
             String mithrilQuantityString = config.showQuantity() ? mithrilCount + (config.showProfit() ? " x " : "") : "";
             String mithrilProfitString = config.showProfit() ? (mithrilProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(mithrilProfit) : FormatIntegerWithCommas(mithrilProfit)) + " GP" : "";
 
@@ -121,7 +121,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
-        if (adamantiteProfit > 0) {
+        if (adamantiteProfit > 0 && (config.showQuantity() || config.showProfit())) {
             String adamantiteQuantityString = config.showQuantity() ? adamantiteCount + (config.showProfit() ? " x " : "") : "";
             String adamantiteProfitString = config.showProfit() ? (adamantiteProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(adamantiteProfit) : FormatIntegerWithCommas(adamantiteProfit)) + " GP" : "";
 
@@ -131,7 +131,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
-        if (runiteProfit > 0) {
+        if (runiteProfit > 0 && (config.showQuantity() && config.showProfit())) {
             String runiteQuantityString = config.showQuantity() ? runiteCount + (config.showProfit() ? " x " : "") : "";
             String runiteProfitString = config.showProfit() ? (runiteProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(runiteProfit) : FormatIntegerWithCommas(runiteProfit)) + " GP" : "";
 
@@ -141,8 +141,11 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
+        // Check if both showQuantity and showProfit are turned off
+        if (config.showQuantity() || config.showProfit()) {
             // Add blank line
             panelComponent.getChildren().add(LineComponent.builder().build());
+        }
 
         if (config.showProfitPerHour()) {
             // Display profit per hour
