@@ -41,7 +41,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
     @Override
     public Dimension render(Graphics2D graphics)
     {
-        if (!plugin.isInMlm() || (!config.showQuantity() && !config.showProfit()))
+        if (!plugin.isInMlm())
         {
             return null;
         }
@@ -71,7 +71,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
         double profitPerHour = totalProfit / hoursElapsed;
 
         // If no ores have been collected or both toggles are disabled, don't bother showing anything
-        if (totalProfit == 0 || (!config.showQuantity() && !config.showProfit()))
+        if (totalProfit == 0 && (nuggetCount == 0))
         {
             return null;
         }
@@ -152,12 +152,13 @@ public class MotherlodeProfitOverlay extends OverlayPanel
                     .build());
         }
 
-        if (totalProfit > 0)
+        if (totalProfit > 0) {
             // Display total profit
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Total:")
                     .right(FormatIntegerWithCommas(totalProfit) + " GP")
                     .build());
+        }
 
         return super.render(graphics);
     }
