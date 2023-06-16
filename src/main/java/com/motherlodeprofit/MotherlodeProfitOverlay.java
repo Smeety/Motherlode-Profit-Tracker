@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -28,6 +29,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
     @Inject
     MotherlodeProfitOverlay(MotherlodeProfitPlugin plugin, MotherlodeProfitSession motherlodeProfitSession, MotherlodeProfitConfig config, ItemManager itemManager)
     {
+        setPriority(OverlayPriority.HIGH);
         setPosition(OverlayPosition.TOP_LEFT);
         this.plugin = plugin;
         this.motherlodeProfitSession = motherlodeProfitSession;
@@ -124,7 +126,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel
             String adamantiteProfitString = config.showProfit() ? (adamantiteProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(adamantiteProfit) : FormatIntegerWithCommas(adamantiteProfit)) + " GP" : "";
 
             panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Adamantite:")
+                    .left("Adamant:")
                     .right(adamantiteQuantityString + adamantiteProfitString)
                     .build());
         }
@@ -142,16 +144,18 @@ public class MotherlodeProfitOverlay extends OverlayPanel
             // Add blank line
             panelComponent.getChildren().add(LineComponent.builder().build());
 
-        // Display profit per hour
-        panelComponent.getChildren().add(LineComponent.builder()
-                .left("Profit/Hour:")
-                .right(QuantityFormatter.quantityToRSDecimalStack((int)profitPerHour) + " GP")
-                .build());
+        if (config.showProfitPerHour()) {
+            // Display profit per hour
+            panelComponent.getChildren().add(LineComponent.builder()
+                    .left("GP/H:")
+                    .right(QuantityFormatter.quantityToRSDecimalStack((int) profitPerHour) + " GP")
+                    .build());
+        }
 
         if (totalProfit > 0)
             // Display total profit
             panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Total Profit:")
+                    .left("Total:")
                     .right(FormatIntegerWithCommas(totalProfit) + " GP")
                     .build());
 

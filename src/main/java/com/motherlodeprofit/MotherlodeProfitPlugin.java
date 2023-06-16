@@ -54,7 +54,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-        name = "Motherlode Profit",
+        name = "Motherlode Profit Tracker",
         description = "Show profit collected at MLM",
         tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
         enabledByDefault = true

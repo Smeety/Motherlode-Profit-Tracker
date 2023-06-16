@@ -34,7 +34,7 @@ public interface MotherlodeProfitConfig extends Config
     @ConfigSection(
             name = "Decimal Configuration",
             description = "Configuration for decimal formatting",
-            position = 5
+            position = 6
     )
     String decimalSection = "Decimal Configuration";
 
@@ -70,12 +70,21 @@ public interface MotherlodeProfitConfig extends Config
     {
         return true;
     }
+    @ConfigItem(
+            keyName = "showProfitPerHour",
+            name = "Show Profit per Hour",
+            description = "Toggle the display of profit per hour",
+            position = 5
+    )
+    default boolean showProfitPerHour() {
+        return true;
+    }
 
     @ConfigItem(
             keyName = "useRSDecimalStack",
             name = "Use RS Decimal Stack",
             description = "Use RS Decimal Stack format for profit above 100,000 GP",
-            position = 5,
+            position = 6,
             section = decimalSection
     )
     default boolean useRSDecimalStack()
@@ -86,7 +95,7 @@ public interface MotherlodeProfitConfig extends Config
             keyName = "profitThreshold",
             name = "Profit Threshold",
             description = "The profit threshold to use RS decimal stack format",
-            position = 6,
+            position = 7,
             section = decimalSection
     )
     @Range(min = 10000)
