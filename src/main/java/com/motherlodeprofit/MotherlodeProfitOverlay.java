@@ -18,6 +18,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel {
     private final MotherlodeProfitConfig config;
     private final ItemManager itemManager;
     private final long startTime;
+    private int maxPanelWidth = ComponentConstants.STANDARD_WIDTH;
 
     @Inject
     MotherlodeProfitOverlay(
@@ -41,9 +42,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel {
             return null;
         }
 
-
         MotherlodeProfitSession session = motherlodeProfitSession;
-
         int totalProfit = session.getTotalProfit();
         int nuggetCount = session.getNuggetsCount();
 
@@ -65,10 +64,12 @@ public class MotherlodeProfitOverlay extends OverlayPanel {
                     .build());
         }
 
+        maxPanelWidth = ComponentConstants.STANDARD_WIDTH;
+
         addOreLine("Coal", session.getCoalCount(), session.getCoalProfit(), graphics);
         addOreLine("Gold", session.getGoldCount(), session.getGoldProfit(), graphics);
         addOreLine("Mithril", session.getMithrilCount(), session.getMithrilProfit(), graphics);
-        addOreLine("Adamant", session.getAdamantiteCount(), session.getAdamantiteProfit(), graphics);
+        addOreLine("Adamantite", session.getAdamantiteCount(), session.getAdamantiteProfit(), graphics);
         addOreLine("Runite", session.getRuniteCount(), session.getRuniteProfit(), graphics);
 
         if (config.showQuantity() || config.showProfit()) {
@@ -88,8 +89,10 @@ public class MotherlodeProfitOverlay extends OverlayPanel {
                     .left("Total:")
                     .right(formatIntegerWithCommas(totalProfit) + " GP")
                     .build());
-
         }
+
+        panelComponent.setPreferredSize(new Dimension(maxPanelWidth, 0));
+
         return super.render(graphics);
     }
 
@@ -99,8 +102,10 @@ public class MotherlodeProfitOverlay extends OverlayPanel {
             String profitString = config.showProfit() ? (oreProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(oreProfit) : formatIntegerWithCommas(oreProfit)) + " GP" : "";
 
             final FontMetrics fontMetrics = graphics.getFontMetrics();
-            int panelWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth("Adamantite" + quantityString + profitString) + ComponentConstants.STANDARD_BORDER + ComponentConstants.STANDARD_BORDER);
-            panelComponent.setPreferredSize(new Dimension(panelWidth, 0));
+            int panelWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(oreName + " " + quantityString + profitString) + ComponentConstants.STANDARD_BORDER + ComponentConstants.STANDARD_BORDER);
+
+            maxPanelWidth = Math.max(maxPanelWidth, panelWidth);
+
             panelComponent.getChildren().add(LineComponent.builder()
                     .left(oreName + ":")
                     .right(quantityString + profitString)

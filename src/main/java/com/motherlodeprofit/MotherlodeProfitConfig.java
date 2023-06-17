@@ -98,7 +98,7 @@ public interface MotherlodeProfitConfig extends Config
             position = 7,
             section = decimalSection
     )
-    @Range(min = 10000)
+    @Range(min = 1)
     default int profitThreshold()
     {
         return 100000;
