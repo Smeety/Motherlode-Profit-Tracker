@@ -50,8 +50,9 @@ public class MotherlodeProfitOverlay extends OverlayPanel {
             return null;
         }
 
+
         panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Motherlode Profit")
+                .text("Motherlode Tracker")
                 .color(Color.GREEN)
                 .build());
 
@@ -102,7 +103,7 @@ public class MotherlodeProfitOverlay extends OverlayPanel {
             String profitString = config.showProfit() ? (oreProfit > config.profitThreshold() && config.useRSDecimalStack() ? QuantityFormatter.quantityToRSDecimalStack(oreProfit) : formatIntegerWithCommas(oreProfit)) + " GP" : "";
 
             final FontMetrics fontMetrics = graphics.getFontMetrics();
-            int panelWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(oreName + " " + quantityString + profitString) + ComponentConstants.STANDARD_BORDER + ComponentConstants.STANDARD_BORDER);
+            int panelWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(oreName + ": " + quantityString + profitString) + ComponentConstants.STANDARD_BORDER + ComponentConstants.STANDARD_BORDER);
 
             maxPanelWidth = Math.max(maxPanelWidth, panelWidth);
 
